@@ -1,0 +1,894 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,700');
+
+h3 {
+  color: #3a3434;
+}
+
+.row{
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+.text-break {
+  white-space: pre-wrap;
+}
+
+.swal-button--confirm{
+  background-color:#141b42;
+}
+
+.swal-button.swal-button--confirm:hover{
+  background-color:#000103;
+}
+
+#mapafixed{
+  position:fixed;
+}
+
+.mapaalcostado{
+  height: 100vh;
+}
+
+.mapa{
+  height: 400px !important;
+}
+
+.swal-modal{
+  width:80% !important;
+}
+
+
+
+.card-footer {
+  background: transparent;
+  border-top: 0px;
+  margin-bottom: 10px;
+}
+
+#banner{
+  background-position: center center; background-size: cover;
+  min-height: 30vh;
+  width: 100%;
+  display: flex;
+  text-align: center;
+  font-weight: bold;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(rgba(27, 1, 44, 0.527),rgba(0, 0, 0, 0.5)) , url('../img/banner.jpg');
+}
+
+table{
+  table-layout:fixed;
+}
+
+table td {
+  border: none !important;
+  padding: 2% !important;
+  font-size: medium;
+}
+
+table th{
+  padding: 2% !important;
+  font-size: medium;
+}
+
+table tbody tr td a{
+  color: black !important;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+@media (max-width: 990px){
+  .mapaalcostado{
+    height: 300px;
+  }
+}
+
+@media (max-width: 768px){
+  table, thead, tbody, th, td, tr { 
+		display: block; 
+    
+  } 
+  
+  .swal-modal{
+    width:80% !important;
+}
+	
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+
+	}
+	
+	tr { 
+    border: 1px solid #ccc; 
+  }
+	
+	td { 
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 50%; 
+	}
+
+	td:before { 
+		position: absolute;
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+  }
+}
+
+@media only screen  and (max-width: 360px) {
+  .btn-group{
+    padding-top: 5px !important; 
+  }
+  
+  body::after {
+    content: '';
+    display: block;
+    height: 100px !important; 
+  }
+  
+  footer {
+    position: absolute;
+    height: initial !important;
+  }
+} 
+
+@media only screen and (max-width: 768px) and (min-width: 360px) {
+  .btn-group{
+    padding-top: 5px !important; 
+  }
+  
+  footer {
+    position: absolute;
+    height: initial !important;
+  }
+  
+}
+
+@media (max-width: 1024px) {
+  .nav-pc {
+    display: none;
+  }
+  .profile-icon{
+    display: none;
+  }
+
+  body::after {
+    content: '';
+    display: block;
+    height: 100px !important; 
+  }
+
+  footer {
+    position: absolute;
+    bottom: 0;
+    height: initial !important;
+  }
+}
+
+@media (min-width: 1025px) {
+  .nav-mobile {
+    display: none;
+  }
+  #my-profile-text {
+    display: none;
+  }
+  .profile-icon{
+    margin-right: 10px;
+  }
+}
+
+
+body {
+  font-family: 'Montserrat', Helvetica, sans-serif;
+  background-color: white !important;
+  color: black !important;
+  font-size: 14px;
+  min-height:100vh; margin:0; 
+  position:relative;
+  }
+
+  body::after {
+    content: '';
+    display: block;
+    height: 70px; 
+  }
+  
+  footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 70px;
+  }
+
+.clear {
+  clear: both;
+  height: 0;
+  overflow: hidden;
+}
+
+#container {
+  width: 75%;
+  margin: 0 auto;
+  background-color: #FFF;
+  padding: 20px 40px;
+  border: solid 1px black;
+  margin-top: 20px;
+  min-height: 400px;
+}
+
+a.link {
+  text-transform: uppercase;
+  font-size: 10px;
+  background-color: #92a4ad;
+  padding: 10px 15px;
+  border-radius: 0;
+  color: #416475;
+  display: inline-block;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  line-height: 1.5;
+  text-decoration: none;
+  margin-top: 50px;
+  letter-spacing: 1px;
+}
+
+.btn-nav{
+padding-left: 15px !important;
+padding-right: 15px !important;
+font-weight: normal !important;
+}
+
+.btn-nav a{
+  text-decoration: none;
+  color: black;
+}
+
+.btn-nav:hover a{
+  text-decoration: none;
+  color: white !important;
+}
+
+/* Indigo */
+
+body.indigo-theme table tbody tr td a:hover{
+  color: #5E376D !important;
+}
+
+body.indigo-theme th{
+  background-color: #5E376D !important; 
+  color: white;
+}
+
+body.indigo-theme .bi-person-circle{
+  color:#79787c;
+}
+
+body.indigo-theme .bi-person-circle:hover{
+  color:#03071e;
+}
+
+/* Banner */
+body.indigo-theme #banner h1{
+  font-weight: bold;
+  color:#eee25c !important;
+}
+
+/* Home page */
+body.indigo-theme .cardS2{
+  background-color: #F6E6E8;
+}
+
+body.indigo-theme .cardS2 h5{
+  font-weight: bold;
+  color: #5E376D;
+}
+
+body.indigo-theme .cardS1{
+  background-color: #5E376D;
+}
+
+body.indigo-theme .cardS1 h5{
+  font-weight: bold;
+  color: #eee25c;
+}
+
+body.indigo-theme .cardS1 p{
+  color: white;
+}
+
+body.indigo-theme #banner p{
+  font-weight: normal;
+  color: white !important;
+}
+
+body.indigo-theme .btn-outline-primary.cardS2:hover{
+  background-color: #5E376D;
+  color: white;
+}
+
+body.indigo-theme .btn-outline-primary.cardS2{
+  border-color: #5E376D;
+  color: #5E376D;
+}
+
+body.indigo-theme .btn-outline-primary.cardS2:focus{
+  box-shadow: 0 0 0 3px rgba(175, 125, 221, 0.507) !important;
+  z-index: 2;
+}
+
+body.indigo-theme .btn-outline-primary.cardS1:hover{
+  border-color: #eee25c;
+  color: #eee25c;
+}
+
+body.indigo-theme .btn-outline-primary.cardS1{
+  border-color: white;
+  color: white;
+}
+
+body.indigo-theme .btn-outline-primary.cardS1:focus{
+  box-shadow: 0 0 0 3px rgba(206, 174, 67, 0.349);
+  z-index: 2; 
+}
+
+/* Botones primarios */
+body.indigo-theme .btn-primary{
+  border-color: #5E376D ;
+  background-color: #5E376D ;
+  color: white ;
+}
+
+body.indigo-theme .btn-primary:hover{
+  border-color: #03071e ;
+  background-color: #03071e;
+  color: white ;
+}
+
+body.indigo-theme .btn-primary:focus{
+  box-shadow: 0 0 0 3px rgba(133, 50, 172, 0.623);
+  z-index: 2; 
+}
+
+/* Botones secundarios */
+body.indigo-theme .btn-secondary{
+  border-color: #eee25c;
+  background-color: #eee25c ;
+  color: black ;
+}
+
+body.indigo-theme .btn-secondary:hover{
+  border-color: #eee25c ;
+  background-color: white;
+  color: black ;
+}
+
+/* Otros botones */
+body.indigo-theme .btn-warning{
+  border-color: #03071e;
+  background-color: #03071e ;
+  color: white ;
+}
+
+body.indigo-theme .btn-warning:hover{
+  border-color: #03071e ;
+  background-color: white;
+  color: #03071e ;
+}
+
+body.indigo-theme .btn-danger{
+  border-color: #bababb;
+  background-color: #bababb ;
+  color: black ;
+}
+
+body.indigo-theme .btn-danger:hover{
+  border-color: #03071e ;
+  background-color: white;
+  color: #03071e ;
+}
+
+body.indigo-theme .btn-danger:focus{
+  box-shadow: none;
+}
+
+/* Botones del nav */
+body.indigo-theme .btn-nav:hover{
+  border-color: #5E376D ;
+  background-color: #5E376D;
+  color: white !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+/* Paginador */
+body.indigo-theme .page-item.active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color: #5E376D;
+  border-color: #5E376D;
+}
+
+
+body.indigo-theme .page-item.active .page-link:focus {
+  box-shadow: 0 0 0 3px rgba(130, 100, 212, 0.685);
+  z-index: 2;
+}
+
+
+body.indigo-theme .page-link {
+  color: #5E376D;
+}
+
+/* Tabs */
+body.indigo-theme .nav-link {
+  color: #5E376D;
+  font-weight: bold;
+}
+
+body.indigo-theme .nav-link:hover {
+  color: #03071e
+}
+
+body.indigo-theme .nav-tabs .nav-link.active {
+  color: #03071e;
+  font-weight: bold;
+  background-color: #eee25c;
+  border-color: #dee2e6 #dee2e6 #fff;
+}
+
+body.indigo-theme footer{
+  background-color: #b1b1b1;
+}
+
+body.indigo-theme footer .text-footer{
+  color: black !important;
+}
+
+/* Moderno */
+
+body.modern-theme table tbody tr td a:hover{
+  color: #5b5454 !important;
+}
+
+body.modern-theme th{
+  background-color: #5b5454 !important; 
+  color: white;
+}
+
+body.modern-theme #banner{
+  background-image: linear-gradient(rgba(91, 84, 84, 1),rgba(88, 73, 73, 0.5)) , url('../img/banner.jpg');
+}
+
+
+/* Banner */
+body.modern-theme #banner h1{
+  font-weight: bold;
+  color: white;
+}
+
+/* Home page */
+
+body.modern-theme #header-nav{
+  background-color: #ebeadb !important;
+}
+body.modern-theme .cardS1{
+  background-color: #922C40;
+}
+
+body.modern-theme .cardS1 h5{
+  font-weight: bold;
+  color: white;
+}
+
+body.modern-theme .cardS1 p{
+  color: white;
+}
+
+body.modern-theme .cardS2{
+  background-color: #ebeadb;
+}
+
+body.modern-theme .cardS2 h5{
+  font-weight: bold;
+  color: #5b5454;
+}
+
+
+body.modern-theme #banner p{
+  font-weight: normal;
+  color: white !important;
+}
+
+body.modern-theme .btn-outline-primary.cardS1{
+  border-color: white ;
+  color: white ;
+}
+
+body.modern-theme .btn-outline-primary.cardS1:hover{
+  font-weight:bold;
+  background-color: #5b5454;
+}
+
+body.modern-theme .btn-outline-primary.cardS1:focus{
+  box-shadow: 0 0 0 3px rgba(221, 140, 125, 0.507);
+  z-index: 2;
+}
+
+body.modern-theme .btn-outline-primary.cardS2{
+  border-color: #5b5454 ;
+  color: #5b5454;
+}
+
+body.modern-theme .btn-outline-primary.cardS2:hover{
+  font-weight:bold;
+  color: #5b5454;
+}
+
+body.modern-theme .btn-outline-primary.cardS2:focus{
+  box-shadow: 0 0 0 3px rgba(221, 140, 125, 0.507);
+  z-index: 2;
+}
+
+/* Botones primarios */
+body.modern-theme .btn-primary{
+  border-color: #922C40 ;
+  background-color: #922C40 ;
+  color: white;
+}
+
+body.modern-theme .btn-primary:hover{
+  border-color: #581724 ;
+  background-color: #581724;
+  color: white; ;
+}
+
+
+body.modern-theme .btn-primary:focus{
+  box-shadow: none;
+}
+
+
+/* Botones secundarios  */
+body.modern-theme .btn-secondary{
+  border-color: #775650;
+  background-color: #775650;
+  color: white ;
+}
+
+body.modern-theme .btn-secondary:hover{
+  border-color: #573b36 ;
+  background-color: #573b36;
+  color: white ;
+}
+
+
+/* Otros botones */
+body.modern-theme .btn-warning{
+  border-color: #ffe66d;
+  background-color: #ffe66d ;
+  color: black ;
+}
+
+body.modern-theme .btn-warning:hover{
+  border-color: #f5d32a ;
+  background-color: white;
+  color: black ;
+}
+
+
+/* Botones danger */
+body.modern-theme .btn-danger{
+  border-color: #5b5454;
+  background-color: #5b5454 ;
+  color: white ;
+}
+
+body.modern-theme .btn-danger:hover{
+  border-color: #3a3434 ;
+  background-color: #3a3434;
+  color: white ;
+}
+
+/* Botones del nav */
+body.modern-theme .btn-nav:hover{
+  border-color: #922C40 ;
+  background-color: #922C40;
+  color: white !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+/* Paginador */
+body.modern-theme .page-item.active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color: #922C40;
+  border-color: #922C40;
+}
+
+
+body.modern-theme .page-item.active .page-link:focus {
+  box-shadow: 0 0 0 3px rgba(223, 96, 117, 0.685);
+  z-index: 2;
+}
+
+
+body.modern-theme .page-link {
+  color: #922C40;
+}
+
+/* Tabs */
+body.modern-theme .nav-link {
+  color: #922C40;
+  font-weight: bold;
+}
+
+body.modern-theme .nav-link:hover {
+  color: #0c1827
+}
+
+body.modern-theme .nav-tabs .nav-link.active {
+  color: white;
+  font-weight: bold;
+  background-color: #b98980;
+  border-color: #fff;
+}
+
+body.modern-theme footer{
+  background-color: #922C40; 
+}
+
+body.modern-theme footer .text-footer{
+  color: white !important;}
+
+body .logo-head:hover {
+  color: black;
+}
+/* Ocean */
+
+body.ocean-theme table tbody tr td a:hover{
+  color: #4F6D7A !important;
+}
+
+body.ocean-theme th{
+  background-color: #4F6D7A !important; 
+  color: white;
+}
+
+body.ocean-theme .navbar-toggler{
+  background-color: white;
+}
+
+
+body.ocean-theme .fa-map-marked-alt{
+  color:#DBE9EE;
+}
+
+body.ocean-theme .logo-head{
+  color:#DBE9EE;
+}
+
+body.ocean-theme .card p{
+  color:#ebfaff
+}
+
+/* Banner */
+body.ocean-theme #banner h1{
+  font-weight: bold;
+  color: white;
+}
+
+body.ocean-theme .logo-head:hover {
+  color: white;
+}
+
+body.ocean-theme .logo-head:focus {
+  color: white;
+}
+
+/* Home page */
+
+body.ocean-theme .cardS1{
+  background-color: #4F6D7A;
+}
+
+body.ocean-theme .cardS1 h5{
+  font-weight: bold;
+  color: #DBE9EE;
+}
+
+body.ocean-theme .cardS2{
+  background-color: #DBE9EE;
+}
+
+body.ocean-theme .cardS2 h5{
+  font-weight: bold;
+  color: #0c1827;
+}
+
+body.ocean-theme .cardS2 p{
+  color: #0c1827;
+}
+
+body.ocean-theme #banner p{
+  font-weight: normal;
+  color: white !important;
+}
+
+body.ocean-theme .btn-outline-primary.cardS2{
+  border-color: #0c1827;
+  color: #0c1827;
+}
+
+body.ocean-theme .btn-outline-primary.cardS2:hover{
+  border-color: #0c1827;
+  background-color: #0c1827;
+  color: white;
+}
+
+body.ocean-theme .btn-outline-primary.cardS2:focus{
+  box-shadow: 0 0 0 3px rgba(189, 209, 250, 0.685);
+  z-index: 2;
+}
+
+body.ocean-theme .btn-outline-primary.cardS1{
+  border-color: white;
+  color: white;
+}
+
+body.ocean-theme .btn-outline-primary.cardS1:hover{
+  border-color: #0c1827;
+  background-color: #0c1827;
+  color: white;
+}
+
+body.ocean-theme .btn-outline-primary.cardS1:focus{
+  box-shadow: 0 0 0 3px rgba(189, 209, 250, 0.685);
+  z-index: 2;
+}
+
+/* Botones primarios */
+body.ocean-theme .btn-primary{
+  border-color: #0c1827 ;
+  background-color: #0c1827 ;
+  color: white;
+}
+
+body.ocean-theme .btn-primary:hover{
+  border-color: #0c1827 ;
+  background-color: white;
+  color: #0c1827 ;
+}
+
+body.ocean-theme .btn-primary:focus{
+  box-shadow: none;
+}
+
+/* Botones secundarios  */
+body.ocean-theme .btn-secondary{
+  border-color: #DBE9EE;
+  background-color: #DBE9EE;
+  color: black ;
+}
+
+body.ocean-theme .btn-secondary:hover{
+  border-color: #4F6D7A ;
+  background-color: #4F6D7A;
+  color: white ;
+}
+
+
+/* Otros botones */
+body.ocean-theme .btn-warning{
+  border-color: #ffe66d;
+  background-color: #ffe66d ;
+  color: black ;
+}
+
+body.ocean-theme .btn-warning:hover{
+  border-color: #f5d32a ;
+  background-color: white;
+  color: black ;
+}
+
+
+/* Botones danger */
+body.ocean-theme .btn-danger{
+  border-color: #1D3557;
+  background-color: #1D3557 ;
+  color: white ;
+}
+
+body.ocean-theme .btn-danger:hover{
+  border-color: #0c1827 ;
+  background-color: #0c1827;
+  color: white ;
+}
+
+/* Botones del nav */
+
+body.ocean-theme .dropdown-item.btn-nav a{
+  color: #0c1827 !important;
+}
+
+body.ocean-theme .btn-nav a{
+  text-decoration: none;
+  color: white !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+body.ocean-theme .btn-nav:hover{
+  border-color: #166088 ;
+  background-color: #166088;
+  color: white !important;
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+
+/* Paginador */
+body.ocean-theme .page-item.active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color: #4A6FA5;
+  border-color: #4A6FA5;
+}
+
+
+body.ocean-theme .page-item.active .page-link:focus {
+  box-shadow: 0 0 0 3px rgba(146, 204, 243, 0.685);
+  z-index: 2;
+}
+
+
+body.ocean-theme .page-link {
+  color: #4A6FA5;
+}
+
+/* Tabs */
+body.ocean-theme .nav-link {
+  color: #4A6FA5;
+  font-weight: bold;
+}
+
+body.ocean-theme .nav-link:hover {
+  color: #0c1827
+}
+
+body.ocean-theme .nav-tabs .nav-link.active {
+  color: #0c1827;
+  font-weight: bold;
+  background-color: #0c1827;
+  color: white;
+  border-color: #dee2e6 #dee2e6 #fff;
+}
+
+body.ocean-theme #header-nav{
+  background-color: #0c1827;
+}
+
+body.ocean-theme footer{
+  background-color: #0c1827 !important;
+}
+
+body.ocean-theme footer .text-footer{
+  color: white !important;
+}
+
+/* mapa */
+.mapid{
+  width: 100%;
+  height: 300px;
+}
+
+.spanConHover:hover{
+  font-weight: bold;
+  cursor:pointer;
+}

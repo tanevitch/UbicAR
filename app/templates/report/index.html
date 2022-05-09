@@ -1,0 +1,257 @@
+{% extends "layout.html" %}
+{% block title %}Denuncias{% endblock %}
+{% block head %}
+{{ super() }}
+<script src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<meta name="meta" id="my-data" data-name="{{data}}">
+{% endblock %}
+{% block content %}
+<div id="banner" class="text-white" role="img" aria-label="Fondo lluvioso">
+  <h1>DENUNCIAS</h1>
+</div>
+<div class="container py-5">
+  {% if check_permission('denuncias_show') %}
+  {% set boolShow = True %}
+  {% endif %}
+
+  {% if check_permission('denuncias_tracing') %}
+  {% set boolAsignar = True %}
+  {% endif %}
+
+
+  <section class="p-3 mb-3">
+    <h2>Filtros</h2>
+    <div class="row d-flex">
+      <div class="col-lg mb-2 ">
+        <form  action="{{ url_for('report_index') }}" method="GET">
+          <label class="fs-6" for="report_searchtitle">Buscar por título</label>
+          <div class="d-flex">
+            <input class="form-control me-2" id="report_searchtitle" name="report_searchtitle"
+              placeholder="Buscar denuncias por título...">
+            <button class="btn btn-outline-success" type="submit">Buscar</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="col-lg mb-2">
+        <form action="{{ url_for('report_index') }}" method="GET">
+          <label class="fs-6" for="report_status">Buscar por estado</label>
+          <div class="d-flex" >
+            <select name="report_status" class="form-select me-2" id="report_status">
+              <option selected disabled>Selecciona un estado</option>
+              <option value="{{estados.SINCONFIRMAR.name}}">Sin confirmar</option>
+              <option value="{{estados.ENCURSO.name}}">En curso</option>
+              <option value="{{estados.RESUELTA.name}}">Resuelta</option>
+              <option value="{{estados.CERRADA.name}}">Cerrada</option>
+            </select>
+            <button class="btn btn-outline-success" type="submit">Buscar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row d-flex align-items-end">
+      <div class="col-lg mb-2">
+        <form action="{{ url_for('report_index') }}" method="GET">
+          <label class="fs-6" for="date_range">Buscar por rango de fechas</label>
+          <div  class="d-flex">
+            <input type="text" id="date_range" name="date_range" class="form-control me-2">
+            <button class="btn btn-outline-success" type="submit">Buscar</button>
+          </div>
+        </form>
+      </div>
+      <div class="col-lg mb-2 btn-group flex-wrap">
+        <form class="btn btn-primary" onclick=submit() action="{{ url_for('report_index') }}" method="GET">
+          <input type="hidden" id="report_unasigned" name="report_unasigned" value="report_unasigned">
+          Ver solo no asignadas
+        </form>
+        <form class="btn btn-primary" onclick=submit() action="{{ url_for('report_index') }}" method="GET">
+          <input type="hidden" id="report_self" name="report_self" value="report_self">
+          Ver asignadas a mí
+        </form>
+        <a href="{{ url_for('report_index') }}" class="btn btn-secondary">Sacar Filtros</a>
+      </div>
+    </div>
+  </section>
+  {%if check_permission('denuncias_create') %}
+  <a href="{{ url_for('report_create') }}" class="btn btn-primary me-2"><i
+      class="bi bi-plus-circle white me-2"></i>Nueva</a>
+
+  {% endif %}
+  <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ayuda">
+    <i class="bi bi-info-circle"></i> Ayuda
+  </button>
+
+  <div class="modal fade" tabindex="-1" id="ayuda" aria-labelledby="ayuda" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Tutorial</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+
+              <h5>Nueva denuncia</h5>
+              <p>
+                Presione el botón "Nueva", complete el formulario y envíelo. Esto creará una nueva denuncia con estado
+                SIN CONFIRMAR
+              </p>
+              <h5>Asignación de denuncias</h5>
+              <p>
+                Para hacer el seguimiento, una denuncia deberá estar asignada a un responsable. El responsable puede
+                elegir qué denuncia asignarse a sí mismo, y un usuario con permisos especiales podrá asignársela a otros
+                usuarios desde el panel de modificar
+              </p>
+              <h5>Eliminación de denuncias</h5>
+              <p>Solo un usuario con permisos especiales podrá eliminar las denuncias, y solo si ésta aún no tiene
+                <u>ningún</u> seguimiento asociado (es decir, si ni siquiera fue asignada)</p>
+              <h5>Modificación de denuncias</h5>
+              <p>Una denuncia podrá ser modificada si está SIN CONFIRMAR o EN CURSO, y no si ya fue resuelta o cerrada.
+                Si el usuario que modifica es el asignado, o si tiene permisos de reasignación, éste podrá elegir
+                reasignarsela a otro, o a Nadie (y pasará a poder ser elegida por cualquier usuario)</p>
+              <h5>Seguimiento de denuncias</h5>
+              <p>
+                El seguimiento se habilitará solo si la denuncia tiene un asignado. Cualquier usuario con permisos podrá
+                realizar un seguimiento de una denuncia.
+
+              </p>
+
+              <ul>
+                <li>
+                  <strong>SIN CONFIRMAR:</strong> Una denuncia que fue cargada en el sistema, y aún no se pudo contactar con el
+                  ciudadano para realizar la confirmación. Si el asignado realiza tres intentos, y no selecciona la
+                  opción confirmar, la denuncia pasará a estado cerrada <u>automáticamente</u>, se deshabilitarán los
+                  seguimientos y posibilidad de modificaciones
+                </li>
+                <li>
+                  <strong>EN CURSO:</strong> Una denuncia que llega al sistema, y el asignado pudo contactarse con el
+                  ciudadano.
+                  <br>
+                  <strong><i class="bi bi-exclamation-triangle"></i> ATENCIÓN:</strong> si el asignado realizó dos
+                  intentos fallidos de comunicación, y el tercer intento fue exitoso, deberá <u>primero</u> confirmarla, 
+                  y <u>luego</u> realizar la carga del seguimiento
+                </li>
+                <li>
+                  <strong>CERRADA:</strong> Una denuncia que no pudo ser confirmada se cerrará automáticamente al tercer
+                  intento fallido de comunicación con el ciudadano. Una denuncia <strong>EN CURSO</strong> puede ser
+                  cerrada, debiendo obligatoriamente cargar un mensaje justificativo por su acción
+                </li>
+                <li>
+                  <strong>RESUELTA:</strong> Una denuncia EN CURSO puede ser resuelta en cualquier momento <u>solo por el asignado</u>. Si ud. no es el asignado puede elegir cerrar la denuncia, debiendo obligatoriamente cargar un mensaje justificativo por su acción
+                </li>
+              </ul>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <table id="example" class="table mt-3 display text-center">
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Fecha de Creación</th>
+        <th>Estado</th>
+        <th>Asignado a</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for report in reports.items %}
+      <tr>
+        <td>{{ report.title }}</td>
+        <td>{{ report.created_at }}</td>
+        <td>{{ report.status }}</td>
+        <td>{% if report.assigned_to %} {{report.get_user_assigned(report.id_report).username}} {% endif %}</td>
+        <td>
+          {%if boolShow %}
+          <a href="{{url_for('report_info',id=report.id_report)}}" class="btn btn-primary">
+            Mas info
+          </a>
+          {% endif %}
+
+          {% if boolAsignar and not report.assigned_to%}
+          <a href="{{ url_for('report_assignment',id=report.id_report) }}" class="btn btn-secondary"
+            onclick="return confirm('Esta denuncia se te asignará. ¿Confirmar asignación?')">
+            Asignarme
+          </a>
+          {% endif %}
+
+
+
+        </td>
+        {% endfor %}
+    </tbody>
+  </table>
+  <nav aria-label="Page navigation">
+    <ul class="pagination">
+      {% if reports.has_prev %}
+      <li class="page-item"> <a class="page-link"
+          href="{{ url_for('report_index', page=reports.prev_num) }}?{{request.query_string.decode()}}">Anterior</a>
+      </li>
+      {% else %}
+      <li class="page-item"><a class="page-link btn disabled" href="#">Anterior</a></li>
+      {% endif %}
+
+      {% if reports.has_next %}
+      <li class="page-item"> <a class="page-link"
+          href="{{ url_for('report_index', page=reports.next_num) }}?{{request.query_string.decode()}}">Siguiente</a>
+      </li>
+      {% else %}
+      <li class="page-item"><a class="page-link btn disabled" href="#">Siguiente</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+  <div id="mapid" class="mapid"></div>
+
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="../../static/scripts/mapaPuntosIndex.js"></script>
+<script>
+  $('#date_range').daterangepicker({
+    "locale": {
+      "format": "DD/MM/YYYY",
+      "separator": " - ",
+      "applyLabel": "Aplicar",
+      "cancelLabel": "Cancelar",
+      "fromLabel": "Desde",
+      "toLabel": "Hasta",
+      "customRangeLabel": "Custom",
+      "daysOfWeek": [
+        "Lu",
+        "Ma",
+        "Mi",
+        "Ju",
+        "Vi",
+        "Sa",
+        "Do"
+      ],
+      "monthNames": [
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre"
+      ],
+      "firstDay": 1
+    }
+  });
+</script>
+{{ super() }}
+{% endblock %}

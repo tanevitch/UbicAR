@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+{% block title %}Usuarios{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<section class="container my-5">
+  <div class="row">
+    <div class="col-lg-6">
+      <h1>Editar un usuario</h1>
+
+      <form action="{{ url_for('user_update',id=user.id_user)}}" method="POST" id="formulario">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        {% if user.password != None %}
+          <div class="mb-3" id="grupo_email">
+            <label for="email" class="form-label">Email</label>
+            <input name="email" id="email" type="email" class="form-control" placeholder="juanito@example.com"
+              value={{user.email}} required />
+            <i class=" fas fa fa-times-circle"></i>
+            <p></p>
+          </div>
+        
+          <div class="mb-3" id="grupo_password">
+            <label for="password" class="form-label">Contraseña</label>
+            <input name="password" id="password" type="password" class="form-control"
+              placeholder="Dejar vacía implica mantener actual">
+              <i class=" fas fa fa-times-circle"></i>
+              <p></p>
+          </div>
+        {% endif %}
+        <div class="mb-3" id="grupo_username">
+          <label for="username" class="form-label">Nombre de usuario</label>
+          <input name="username" id="username" type="text" class="form-control" placeholder="pepito" required
+            value={{user.username}}>
+          <i class=" fas fa fa-times-circle"></i>
+          <p></p>
+        </div>
+        <div class="mb-3" id="grupo_fname">
+          <label for="fname" class="form-label">Nombre</label>
+          <input name="fname" id="fname" type="text" class="form-control" placeholder="Juan" required
+            value={{user.fname}}>
+          <i class=" fas fa fa-times-circle"></i>
+          <p></p>
+        </div>
+        <div class="mb-3" id="grupo_lname">
+          <label for="lname" class="form-label">Apellido</label>
+          <input name="lname" id="lname" type="text" class="form-control" placeholder="Perez" required
+            value={{user.lname}}>
+          <i class=" fas fa fa-times-circle"></i>
+          <p></p>
+        </div>
+        {%if check_permission('usuario_change_roles')%}
+          <div class="mb-3 border-top border-bottom border-right py-2" >
+            <h5>Asignación de Roles</h5>
+              {% for rol in roles_que_tiene %}
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="roles" value={{rol}} checked>
+                  <label class="form-check-label">
+                    {{rol}}
+                  </label>
+                </div>
+                {% endfor %}
+                {% for rol in roles_que_no_tiene %}
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="roles" value={{rol}}>
+                  <label class="form-check-label">
+                    {{rol}}
+                  </label>
+                </div>
+              {% endfor %}
+          </div>
+        {%endif%}
+        <div class="btn-group flex-wrap">
+          <a href="{{ url_for('user_index') }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-90deg-left"></i>
+            Volver
+          </a>
+          <button type="submit" class="btn btn-primary">Actualizar</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-lg-6">
+      <img src="../../static/img/create_user.jpg" class="my-3 w-100 imagenresponsive"
+        alt="Imagen decorativa del formulario modificar usuario">
+    </div>
+
+  </div>
+
+</section>
+{% endblock %}
+{% block script %}
+{{ super() }}
+<script src="../../static/scripts/forms/formUser.js"></script>  
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends "layout.html" %}
+{% block title %}Rutas de Evacuación{% endblock %}
+{% block head %}
+{{ super() }}
+
+<meta id="my-data" data-name="{{data}}">
+{% endblock %}
+{% block content %}
+<div id="banner" class="text-white" role="img" aria-label="Fondo lluvioso"><h1>RUTAS DE EVACUACIÓN</h1></div>
+<div class="container py-5">
+
+  <div class="row align-items-end">
+    {%if check_permission('evacuation_route_create')%}
+    <div class="d-flex mb-2">
+      <a href="{{ url_for('eRoutes_create') }}" class="btn btn-primary"><i class="bi bi-plus-circle white me-2"></i>Nuevo</a>
+    </div>
+    {% endif %}
+   
+    <div class="col-lg mb-2 ">
+      <form action="{{ url_for('eRoutes_index') }} " method="GET">
+          <label class="fs-6" for="er_name">Buscar por nombre</label>
+          <div class="d-flex">
+            <input class="form-control me-2" id="er_name" name="er_name" placeholder="Buscar ruta por nombre...">
+            <button class="btn btn-outline-success" type="submit">Buscar</button>
+          </div>
+      </form>
+    </div>
+  
+    <div class="col-lg mb-2">
+      <form action="{{ url_for('eRoutes_index') }}" method="GET">
+        <label class="fs-6 mb-2" for="status">Buscar por estado</label>
+        <div class="d-flex" >
+          <select name="status" class="form-select me-2" id="status">
+            <option selected disabled>Selecciona un estado</option>  
+            <option value="1">Publicado</option>
+              <option value="0">Despublicado</option>
+          </select>
+          <button class="btn btn-outline-success" type="submit">Buscar</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-lg-2 mb-2">
+        <a href="{{ url_for('eRoutes_index') }}" class="btn btn-secondary">Sacar Filtros</a>
+    </div>
+
+
+  </div>
+
+  
+  {% if check_permission('evacuation_route_show') %}
+  {% set boolShow = True %}
+  {% endif %}
+
+  {% if check_permission('evacuation_route_change_status') %}
+  {% set boolStatus = True %}
+  {% endif %}
+
+  {% if check_permission('evacuation_route_destroy') %}
+  {% set boolDestroy = True %}
+  {% endif %}
+
+
+  <table id="example" class="table mt-3 display text-center">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Descripcion</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for route in routes.items %}
+      <tr>
+        <td>{{ route.name }}</td>
+        <td>{{ route.description }}</td>
+        {% if route.status == 1 %}
+        <td>Publicado </td>
+        {% else %}
+        <td>No publicado </td>
+        {% endif %}
+        <td class="btn-group flex-wrap">
+          {% if boolShow %}
+          <a href="{{url_for('eRoutes_info',id=route.id_eRoute)}}" class="btn btn-primary">
+             Mas info 
+          </a>
+          {% endif %}
+          {% if boolStatus %}
+          <a href="{{ url_for('eRoutes_activation',id=route.id_eRoute) }}" class="btn btn-secondary">
+            {% if route.status == 1 %}
+            Despublicar
+            {% else %}
+            Publicar
+            {% endif %}
+          </a>
+          {% endif %}
+          {% if boolDestroy %}
+          <a href="{{ url_for('eRoutes_delete',id=route.id_eRoute) }}" class="btn btn-warning"
+            onclick="return confirm('¿Estás seguro que querés eliminar la ruta de evacuación {{route.name}}?')">
+            Eliminar
+          </a>
+          {% endif %}
+        </td>
+      </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+  <nav aria-label="Page navigation">
+    <ul class="pagination">
+        {% if routes.has_prev %}
+          <li class="page-item"> <a class="page-link" href="{{ url_for('eRoutes_index', page=routes.prev_num) }}?{{request.query_string.decode()}}">Anterior</a></li>
+        {% else %}
+          <li class="page-item"><a class="page-link btn disabled" href="#">Anterior</a></li>
+        {% endif %}
+
+        {% if routes.has_next %}
+          <li class="page-item"> <a class="page-link" href="{{ url_for('eRoutes_index', page=routes.next_num) }}?{{request.query_string.decode()}}">Siguiente</a></li>
+        {% else %}
+          <li class="page-item"><a class="page-link btn disabled" href="#">Siguiente</a></li>
+        {% endif %}
+    </ul>
+  </nav>
+  <div id="mapid" class="mapid"></div>
+
+</div>
+
+{% endblock %}
+{% block script %}
+{{ super() }}
+<script type="module" src="../../static/scripts/evacuation_route/index.js"></script>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}Zonas Inundables{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<section class="container py-5">
+  <div class="row d-flex">
+    <div class="col-lg-6">
+      <h1>Cargar zonas inundables</h1>
+      <form action="{{ url_for('fz_create') }}" method="POST" enctype='multipart/form-data' name="form" id="formulario">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <div class="mb-3">
+          <div class="mb-3" id="grupo_file">
+            <label for="file" class="form-label">Ingrese el archivo con extensión .csv</label>
+            <input name="file" type="file" id="file" class="form-control" accept=".csv" />
+          </div>
+
+          <div class="d-flex">
+            <button type="reset" class="btn btn-secondary me-3">Limpiar</button>
+            <button type="submit" class="btn btn-primary">Crear</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-lg-6 d-flex">
+      <img src="../../static/img/zonas.jpg" class="my-3 w-50 imagenresponsive"
+        alt="Usuario seleccionando punto en el mapa">
+        <img src="../../static/img/zonas2.jpg" class="my-3 w-50 imagenresponsive"
+        alt="Usuario seleccionando punto en el mapa">
+    </div>
+    <div class="row">
+      <div class="col-lg-3">
+        <a href="{{ url_for('fz_index') }}" class="btn btn-primary">
+          <i class="bi bi-arrow-90deg-left"></i>
+          Volver</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+
+<div id="banner" role="img" aria-label="Fondo lluvioso"><h1>GESTION DE INUNDACIONES</h1></div>
+<section class="py-5 container">
+  <div class="row ">
+    {% for card in render_cards()%}
+    <div class="col-lg-4 my-2">
+      <div class="card h-100 cardS1" data-aos="zoom-in">
+        <div class="card-body">
+          <h5 class="card-title">MÓDULO <span>{{card[0]}}</span></h5>
+          <p class="card-text">
+            {{card[1]}}
+          </p>
+          <a href="{{card[2]}}"  class="btn btn-primary cardS1">IR</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}

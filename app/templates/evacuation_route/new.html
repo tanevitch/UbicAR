@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+{% block title %}Puntos de encuentro{% endblock %}
+{% block head %}
+{{ super() }}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+
+{% endblock %}
+{% block content %}
+
+<section class="container py-5">
+  <div class="row align-items-center">
+    <div class="col-lg-6">
+      <h1>Crear ruta de evacuación</h1>
+      <form action="{{ url_for('eRoutes_create') }}" method="POST" id="form" name="form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <div class="mb-3">
+          <label for="name" class="form-label">Nombre</label>
+              <input id="name" name="name" class="form-control" placeholder="Recorrido nro. 20" required />
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Descripcion</label>
+              <input id="description" name="description" type="text" class="form-control"  placeholder="Recorrido del punto de encuentro..." required />
+        </div>
+
+        <div class="mb-3">
+          <label for="color" class="form-label">Elija un color</label>
+          <input id="color" name="color" type="color" class="form-control form-control-color" value="#563d7c">
+        </div>
+
+
+        <div class="mb-3">
+          <input type="hidden" class="form-control" name="latAndLong" id="latAndLong" />
+        </div>
+
+        <div id="mapid" class="mapid mb-3"></div>
+
+        <div class="btn-group flex-wrap">
+          <button type="reset" class="btn btn-warning ">Limpiar formulario</button>
+          <a id="removeLast" class="btn btn-secondary ">Limpiar ultimo punto</a>
+          <button type="submit" class="btn btn-primary">Crear</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-lg-6">
+      <img src="../../static/img/evacuation_route.jpg" class="my-3 w-100 imagenresponsive"
+        alt="Usuario seleccionando punto en el mapa">
+    </div>
+    <div class="row py-2">
+      <div class="col-lg-2">
+        <a href="{{ url_for('eRoutes_index') }}" class="btn btn-primary">
+          <i class="bi bi-arrow-90deg-left"></i>
+          Volver</a>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="module" src="../../static/scripts/evacuation_route/newRouteMap.js"></script>
+
+{% endblock %}

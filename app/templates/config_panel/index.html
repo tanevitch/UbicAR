@@ -1,0 +1,194 @@
+{% extends "layout.html" %}
+{% block title %}Configuración{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<article class="pb-5">
+
+  <div id="banner" class="text-white" role="img" aria-label="Fondo lluvioso">
+    <h1>CONFIGURACIÓN</h1>
+  </div>
+
+  <ul class="nav nav-tabs container mt-5" id="myTab" role="tablist">
+    <li class="nav-item me-2 ">
+      <a class="nav-link active px-4" id="pagination-tab" data-bs-toggle="tab" href="#pagination"
+        role="tab">PAGINADOR</a>
+    </li>
+    <li class="nav-item mx-2">
+      <a class="nav-link px-4" id="sorting-tab" data-bs-toggle="tab" href="#sorting" role="tab">ORDENACIÓN</a>
+    </li>
+    <li class="nav-item mx-2">
+      <a class="nav-link px-4" id="palette-tab" data-bs-toggle="tab" href="#palette" role="tab">COLORES</a>
+    </li>
+  </ul>
+
+  <div class="tab-content container " id="myTabContent">
+    <section class="tab-pane fade show active my-5" id="pagination">
+      <div class="col-lg-6">
+        <form action="{{ url_for('config_update') }}" method="POST">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <h4>Paginación</h4>
+          <label for="paginas">Elija la cantidad de elementos por pagina:</label>
+          <input type="number" min=1 max=100 class="my-3" name="paginas" id="paginas" value="{{pagina}}">
+          <br>
+          <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="tab-pane fade py-3" id="sorting">
+      <div class="row">
+        <div class="col-lg mb-3">
+          <form action="{{ url_for('config_update') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+            {%set orderByUser = config_modules['User_module'][0] %}
+            {%set fieldToOrderUser = config_modules['User_module'][1] %}
+
+            <h4>Modulo User</h4>
+            <label for="campo_user">Ordenar por default:</label>
+            <select name="campo_user" class="form-select my-3" id="campo_user">
+              <option value="email" {% if fieldToOrderUser=="email" %} selected {% endif %}>Email</option>
+              <option value="username" {% if fieldToOrderUser=="username" %} selected {% endif %}>Nombre de Usuario
+              </option>
+              <option value="is_active" {% if fieldToOrderUser=="is_active" %} selected {% endif %}>Activos</option>
+            </select>
+            <label for="ordenacion_user">Criterio:</label>
+            <select name="ordenacion_user" class="form-select my-3" id="ordenacion_user">
+              <option value="asc" {% if orderByUser=="asc" %} selected {% endif %}>Ascendente</option>
+              <option value="desc" {% if orderByUser=="desc" %} selected {% endif %}>Descendente</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+          </form>
+        </div>
+        <div class="col-lg mb-3">
+          <form action="{{ url_for('config_update') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+            {%set orderByMP = config_modules['Meeting_point_module'][0] %}
+            {%set fieldToOrderMP = config_modules['Meeting_point_module'][1] %}
+
+            <h4>Modulo Puntos de Encuentro</h4>
+            <label for="campo_mp">Ordenar por default:</label>
+            <select name="campo_mp" class="form-select my-3" id="campo_mp">
+              <option value="name" {% if fieldToOrderMP=="name" %} selected {% endif %}>Nombre</option>
+              <option value="address" {% if fieldToOrderMP=="address" %} selected {% endif %}>Direccion</option>
+              <option value="mail" {% if fieldToOrderMP=="mail" %} selected {% endif %}>Email</option>
+              <option value="visible" {% if fieldToOrderMP=="visible" %} selected {% endif %}>Visibles</option>
+            </select>
+            <label for="ordenacion_mp">Criterio:</label>
+            <select class="form-select my-3" name="ordenacion_mp" id="ordenacion_mp">
+              <option value="asc" {% if orderByMP=="asc" %} selected {% endif %}>Ascendente</option>
+              <option value="desc" {% if orderByMP=="desc" %} selected {% endif %}>Descendente</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+          </form>
+        </div>
+      </div>
+      <div class="row mt-5">
+          <div class="col-lg mb-3">
+            <form action="{{ url_for('config_update') }}" method="POST">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+              {%set orderByFz = config_modules['Floodable_Zone_module'][0] %}
+              {%set fieldToOrderFz = config_modules['Floodable_Zone_module'][1] %}
+
+              <h4>Modulo Zonas Inundables</h4>
+              <label for="campo_fz">Ordenar por default:</label>
+              <select name="campo_fz" class="form-select my-3" id="campo_fz">
+                <option value="name" {% if fieldToOrderFz=="name" %} selected {% endif %}>Nombre</option>
+                <option value="status" {% if fieldToOrderFz=="status" %} selected {% endif %}>Estado</option>
+              </select>
+              <label for="ordenacion_fz">Criterio:</label>
+              <select class="form-select my-3" name="ordenacion_fz" id="ordenacion_fz">
+                <option value="asc" {% if orderByFz=="asc" %} selected {% endif %}>Ascendente</option>
+                <option value="desc" {% if orderByFz=="desc" %} selected {% endif %}>Descendente</option>
+              </select>
+              <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            </form>
+          </div>
+          <div class="col-lg mb-3">
+            <form action="{{ url_for('config_update') }}" method="POST">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+              {%set orderByReport = config_modules['Report_module'][0] %}
+              {%set fieldToOrderReport = config_modules['Report_module'][1] %}
+
+              <h4>Modulo Denuncias</h4>
+              <label for="campo_report">Ordenar por default:</label>
+              <select name="campo_report" class="form-select my-3" id="campo_report">
+                <option value="title" {% if fieldToOrderReport=="name" %} selected {% endif %}>Titulo</option>
+              </select>
+              <label for="ordenacion_report">Criterio:</label>
+              <select class="form-select my-3" name="ordenacion_report" id="ordenacion_report">
+                <option value="asc" {% if orderByReport=="asc" %} selected {% endif %}>Ascendente</option>
+                <option value="desc" {% if orderByReport=="desc" %} selected {% endif %}>Descendente</option>
+              </select>
+              <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            </form>
+          </div>
+        </div>
+
+          <div class="row mt-5">
+            <div class="col-lg-6">
+                <form action="{{ url_for('config_update') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+                    {%set orderByERoute = config_modules['Evacuation_Route_module'][0] %}
+                    {%set fieldToOrderByERoute = config_modules['Evacuation_Route_module'][1] %}
+
+                    <h4>Modulo Rutas de evacuación</h4>
+                    <label for="campo_eRoute">Ordenar por default:</label>
+                    <select name="campo_eRoute" class="form-select my-3" id="campo_eRoute">
+                      <option value="name" {% if fieldToOrderByERoute=="name" %} selected {% endif %}>Nombre</option>
+                      <option value="status" {% if fieldToOrderByERoute=="status" %} selected {% endif %}>Estado</option>
+                    </select>
+                    <label for="ordenacion_eRoute">Criterio:</label>
+                    <select class="form-select my-3" name="ordenacion_eRoute" id="ordenacion_eRoute">
+                      <option value="asc" {% if orderByERoute=="asc" %} selected {% endif %}>Ascendente</option>
+                      <option value="desc" {% if orderByERoute=="desc" %} selected {% endif %}>Descendente</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                </form>
+            </div>
+          </div>
+    </section>
+    <section class="tab-pane fade py-3" id="palette">
+      <div class="d-flex row">
+        <div class="col-lg mb-3">
+          <h4>Aplicación privada</h4>
+          <form action="{{ url_for('config_update') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <label for="paleta-priv">Elija un estilo para app privada:</label>
+            <select class="form-select my-3" name="paleta-priv" id="paleta-priv">
+              {% for paleta in paletas %}
+              <option value={{paleta.id_palette}} {% if actual_priv==paleta.name %} selected {% endif %}>{{paleta.name}}
+              </option>
+              {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+          </form>
+        </div>
+
+        <div class="col-lg mb-3">
+          <h4>Aplicación pública</h4>
+          <form action="{{ url_for('config_update') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <label for="paleta-pub">Elija un estilo para app publica:</label>
+            <select class="form-select my-3" name="paleta-pub" id="paleta-pub">
+              {% for paleta in paletas %}
+              <option value={{paleta.id_palette}} {% if actual_pub==paleta.name %} selected {% endif %}>{{paleta.name}}
+              </option>
+              {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary ">Guardar cambios</button>
+          </form>
+        </div>
+      </div>
+
+    </section>
+  </div>
+</article>
+
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+{% block title %}Puntos de encuentro{% endblock %}
+{% block head %}
+{{ super() }}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
+
+<meta id="my-data" data-name="{{coords}}">
+<meta id="my-data2" data-name="{{inicio}}">
+
+
+{% endblock %}
+{% block content %}
+<section class="container py-5">
+
+
+  <h1>Modificar ruta de evacuación</h1>
+  <form action="{{ url_for('eRoutes_update',id=id) }}" method="POST" name="form" id="form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <div class="row py-2">
+      <div class="col-lg-6">
+        <div class="mb-3">
+          <label for="name" class="form-label">Nombre</label>
+          <input name="name" id="name" class="form-control" placeholder="Recorrido nro. 20" value="{{data.name}}"
+            required />
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Descripcion</label>
+          <input type="text" class="form-control" name="description" id="description" value="{{data.description}}"
+            placeholder="Recorrido del punto de encuentro..." required />
+        </div>
+        <div class="mb-3">
+          <label for="color" class="form-label">Elija un color</label>
+          <input id="color" name="color" type="color" class="form-control-color" value="{{data.color}}">
+        </div>
+        <div class="mb-3">
+          <input type="hidden" class="form-control" name="latAndLong" id="latAndLong" />
+        </div>
+      </div>
+      <div class="col-lg-6 text-center">
+        <h5>
+          Instructivo
+        </h5>
+        <p >
+          Puede modificar el recorrido existente <strong>agregando</strong> puntos. Éstos serán agregados a continuación
+          del trazo existente
+          <br>
+          Si comete un error mientras <strong>agrega</strong> puntos a un recorrido <strong>existente</strong>, puede usar
+          el botón <i>Limpiar el último punto</i> para borrar los marcadores agregados, en retroceso.
+          <br>
+          Si desea realizar un recorrido <strong>nuevo</strong>, puede usar el botón <i>Limpiar</i>, que le permitirá
+          borrar <strong>TODO</strong> el recorrido existente, y comenzar de nuevo
+        </p>
+      </div>
+    </div>
+    <div id="mapid" class="mapid mb-3"></div>
+
+    <div class="btn-group flex-wrap">
+      <button type="reset" class="btn btn-warning">Limpiar</button>
+      <a id="removeLast" class="btn btn-secondary ">Limpiar ultimo punto</a>
+      <button type="submit" class="btn btn-primary">Modificar</button>
+    </div>
+  </form>
+
+
+
+
+
+  <div class="col-lg-2">
+    <a href="{{ url_for('eRoutes_index') }}" class="btn btn-primary my-2">
+      <i class="bi bi-arrow-90deg-left"></i>
+      Volver</a>
+  </div>
+</section>
+<script type="module" src="../../static/scripts/evacuation_route/modRouteMap.js"></script>
+
+
+{% endblock %}

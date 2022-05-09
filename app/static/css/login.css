@@ -1,0 +1,41 @@
+#patternbg{
+    background-image: url('../img/login_pattern.jpg');
+    height: 100vh;
+}
+
+@media (max-width: 990px) {
+    #bg-img{
+        display: none !important;
+    }
+}
+
+@media (min-width: 991px) {
+    #bg-img{
+        height: 100vh;
+    }
+}
+
+
+
+body.modern-theme #bg-img{
+    background-color: #ebeadb;
+    
+}
+
+body.ocean-theme #bg-img{
+    background-color: #DBE9EE;
+}
+
+body.indigo-theme #bg-img{
+    background-color: #F6E6E8;
+}
+
+
+.row{
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+body.ocean-theme .fa-map-marked-alt{
+    color:black !important;
+}

@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block title %}Denuncias{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<section class="container py-5">
+    <h1>Crear una denuncia</h1>
+    <form action="{{ url_for('report_create') }}" method="POST" id="formulario">
+        <div class="row d-flex">
+            <div class="col-lg-6">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <div class="mb-3">
+                    <label for="title" class="form-label">Titulo</label>
+                    <input name="title" id="title" type="text" class="form-control" placeholder="Alcantarilla tapada"
+                        required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="category" class="form-label">Categoría</label>
+                    <select class="form-select" name="category" id="category" required>
+                        <option selected disabled value="">Seleccione una categoría...</option>
+                        {% for category in categories %}
+                        <option value={{category.id_report_category}}>{{category.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="fname" class="form-label">Nombre denunciante</label>
+                    <input name="fname" id="fname" type="text" class="form-control" placeholder="Juan" required>
+
+                </div>
+                <div class="mb-3">
+                    <label for="lname" class="form-label">Apellido denunciante</label>
+                    <input name="lname" id="lname" type="text" class="form-control" placeholder="Perez" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email denunciante</label>
+                    <input name="email" id="email" type="text" class="form-control" placeholder="juanperez@gmail.com"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Teléfono denunciante</label>
+                    <input name="phone" id="phone" type="number" class="form-control" placeholder="2212222222" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Descripción</label>
+                    <textarea name="description" id="description" class="form-control" maxlength="500"
+                        placeholder="Describe el problema en max. 500 caracteres.." rows="7" required></textarea>
+                </div>
+                <div class="mb-3" id="grupo_cordLat">
+                    <input type="hidden" class="form-control" name="coords" id="coords" />
+                </div>
+                
+            </div>
+            <div class="container my-3 col-lg-6">
+                <div id="mapid" class="maparesponsive"></div>
+            </div>    
+        </div>
+      
+            <a href="{{ url_for('report_index') }}" class="btn btn-secondary me-2">
+                <i class="bi bi-arrow-90deg-left"></i>
+                Volver
+            </a>
+            <button type="submit" class="btn btn-primary">Crear</button>
+    </form>
+</section>
+{% endblock %}
+{% block script %}
+{{ super() }}
+<script type="module" src="../../static/scripts/mapaParaSeleccionarPuntos.js"></script>
+{% endblock %}

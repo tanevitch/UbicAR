@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block title %}Puntos de Encuentro{% endblock %}
+{% block head %}
+{{ super() }}
+  <meta id="my-data" name="meta" data-name="{{coords}}">
+{% endblock %}
+{% block content %}
+<section class="container py-5">
+
+  <h1>Editar punto de encuentro</h1>
+  <form action="{{ url_for('mp_edit',id=id) }}" method="POST" name="form" id="formulario">
+    <div class="row d-flex">
+      <div class="col-lg-6">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+      <div class="mb-3" id="grupo_nombre">
+        <label for="nombre" class="form-label">Nombre</label>
+        <input type="text" id="nombre" name="nombre" class="form-control" value="{{data.name}}" required/>
+        <i class=" fas fa fa-times-circle"></i>
+        <p></p>
+      </div>
+      <div class="mb-3"  id="grupo_direccion">
+        <label for="direccion" class="form-label">Dirección</label>
+        <input type="text" id="direccion" name="direccion"  class="form-control" value="{{data.address}}" required/>
+        <i class=" fas fa fa-times-circle"></i>
+        <p></p>
+      </div>
+      <div class="mb-3" id="grupo_cordLat">
+        <input type="hidden" name="coords"  id="coords"  class="form-control" value="{{data.coords}}" />
+      </div>
+      <div class="mb-3" id="grupo_telefono">
+        <label for="telefono" class="form-label">Teléfono</label>
+        <input type="number" id="telefono" name="telefono"  class="form-control" value="{{data.phone}}" required/>
+        <i class=" fas fa fa-times-circle"></i>
+        <p ></p>
+      </div>
+      <div class="mb-3" id="grupo_email">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" name="email"  class="form-control" value="{{data.mail}}" required/>
+        <i class=" fas fa fa-times-circle"></i>
+        <p></p>
+      </div>
+    </div>
+
+    <div class="col-lg-6 ">
+      <img src="../../static/img/create_mp.jpg" class="w-100 imagenresponsive" alt="Grupo de personas conectándose en distintos puntos">
+    </div>
+  </div>
+  <div id="mapid" class="mapid mb-3"></div>
+  <a href="{{ url_for('mp_index') }}" class="btn btn-secondary">
+    <i class="bi bi-arrow-90deg-left"></i>
+    Volver
+  </a>
+  <button type="submit" class="btn btn-primary">Actualizar</button>
+</form>
+
+</section>
+
+{% endblock %}
+{% block script %}
+{{ super() }}
+<script type="module" src="../../static/scripts/mapaParaModificarConUnPunto.js"></script>
+<script src="../../static/scripts/forms/formMeetingPoint.js"></script>
+{% endblock %}

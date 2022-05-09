@@ -1,0 +1,32 @@
+{% block items %}
+{% set botones = render_buttons() %}
+
+<ul class="navbar-nav align-items-center">
+
+  <li class="nav-item dropdown nav-pc">
+    <a class="nav-link dropdown-toggle btn-nav rounded-pill" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Modulos con mapa
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+      {% for boton in botones[1] %}
+      <li><a class="dropdown-item btn-nav" href="{{boton[1]}}">{{boton[0]}}</a></li>
+      {% endfor %}
+    </ul>
+  </li>
+
+
+    
+    {% for boton in botones[1] %}
+    <li><a class="nav-link btn-nav rounded-pill nav-mobile" href="{{boton[1]}}">{{boton[0]}}</a></li>
+    {% endfor %}
+
+
+
+    {% for boton in botones[0] %}
+    <li class="nav-item">
+        <a class="nav-link btn-nav rounded-pill " aria-current="page" href="{{boton[1]}}">{{boton[0]}}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

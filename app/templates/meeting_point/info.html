@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+{% block title %}Info{% endblock %}
+{% block head %}
+{{ super() }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+<meta id="my-data" name="meta" data-name="{{coords}}">
+{% endblock %}
+{% block content %}
+<div id="banner" class="text-white" role="img" aria-label="Fondo lluvioso">
+  <h1>{{mp.name.upper()}}</h1>
+</div>
+<div class="container py-4 mb-2">
+  <div class="container">
+    <div class="row  text-center">
+      <div class="col-lg-6 align-items-center">
+        <div id="mapid" class="mapid mb-3"></div>
+      </div>
+      <div class="col-lg-6">
+        <div class="mb-3">
+          <h2><i class="bi bi-geo-alt"></i> Ubicación</h2>
+          <h5>Direccion: {{mp.address}}</h5>
+        </div>
+        <div class="mb-3">
+          <h2>Contacto</h2>
+          <h5><i class="bi bi-telephone-inbound"></i> {{mp.phone}}</h5>
+          <h5><i class="bi bi-envelope"></i> {{mp.mail}}</h5>
+        </div>
+
+        <h2>Visibilidad del punto</h2>
+
+        <h5>
+          {% if mp.visible %}
+          Visible
+          {% else %}
+          No visible
+          {% endif %}
+        </h5>
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="d-flex justify-content-center mb-5">
+  <a href="{{ url_for('mp_index') }}" class="btn btn-primary me-1">
+    <i class="bi bi-arrow-90deg-left"></i>
+    Volver</a>
+
+  {%if check_permission('punto_de_encuentro_update')%}
+  <a href="{{url_for('mp_edit',id=mp.id_point)}}" class="btn btn-danger me-1">Modificar</a>
+  {% endif %}
+</div>
+
+
+
+{% endblock %}
+{% block script %}
+{{ super() }}
+<script type="module" src="../../static/scripts/mapaInfo.js"></script>
+{% endblock %}

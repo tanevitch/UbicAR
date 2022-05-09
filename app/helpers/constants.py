@@ -1,0 +1,47 @@
+usuario_toggle_availability = "usuario_toggle_availability"
+usuario_index = "usuario_index"
+usuario_update = "usuario_update"
+usuario_create = "usuario_create"
+usuario_show = "usuario_show"
+usuario_destroy = "usuario_destroy"
+usuario_change_roles = "usuario_change_roles"
+usuario_update_others = "usuario_update_others"
+usuario_aprobacion = "usuario_aprobacion"
+
+punto_de_encuentro_index = "punto_de_encuentro_index"
+punto_de_encuentro_destroy = "punto_de_encuentro_destroy"
+punto_de_encuentro_update = "punto_de_encuentro_update"
+punto_de_encuentro_show = "punto_de_encuentro_show"
+punto_de_encuentro_create = "punto_de_encuentro_create"
+punto_de_encuentro_change_visibility = "punto_de_encuentro_change_visibility"
+
+zonas_inundables_index = "zonas_inundables_index"
+zonas_inundables_create = "zonas_inundables_create"
+zonas_inundables_destroy = "zonas_inundables_destroy"
+zonas_inundables_update = "zonas_inundables_update"
+zonas_inundables_show = "zonas_inundables_show"
+zonas_inundables_change_status = "zonas_inundables_change_status"
+
+evacuation_route_index = "evacuation_route_index"
+evacuation_route_destroy = "evacuation_route_destroy"
+evacuation_route_update = "evacuation_route_update"
+evacuation_route_show = "evacuation_route_show"
+evacuation_route_create = "evacuation_route_create"
+evacuation_route_change_status = "evacuation_route_change_status"
+
+denuncias_show = "denuncias_show"
+denuncias_update = "denuncias_update"
+denuncias_index = "denuncias_index"
+denuncias_create = "denuncias_create"
+denuncias_tracing = "denuncias_tracing"
+denuncias_destroy = "denuncias_destroy"
+denuncias_change_assignee = "denuncias_change_assignee"
+
+configuracion_sistema = "configuracion_sistema"
+
+from enum import Enum
+class EstadoDenuncia(Enum):
+    SINCONFIRMAR = "SINCONFIRMAR"
+    ENCURSO = "ENCURSO"
+    RESUELTA = "RESUELTA"
+    CERRADA = "CERRADA"

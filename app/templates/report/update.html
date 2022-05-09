@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+{% block title %}Denuncias{% endblock %}
+{% block head %}
+{{ super() }}
+<meta id="my-data" name="meta" data-name="{{coords}}">
+{% endblock %}
+{% block content %}
+
+<section class="container py-5">
+
+    <h1>Editar denuncia</h1>
+
+    <form action="{{ url_for('report_update',id=report.id_report) }}" method="POST" id="formulario">
+        <div class="row d-flex">
+            <div class="col-lg-6">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <div class="mb-3">
+                    <label for="title" class="form-label">Titulo</label>
+                    <input name="title" value="{{report.title}}" id="title" type="text" class="form-control"
+                        placeholder="Alcantarilla tapada" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="category" class="form-label">Categoría</label>
+                    <select class="form-select" name="category" id="category">
+                        {% for category in categories %}
+                        <option value={{category.id_report_category}} {% if seleccionada == category.id_report_category %}
+                            selected {% endif %}>{{category.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                {% if report.assigned_to == session.get("user") or check_permission("denuncias_change_assignee") %}
+                <div class="mb-3">
+                    <label for="asignee" class="form-label">Asignado a:</label>
+                    <select class="form-select" name="asignee" id="asignee">
+                        <option {% if not report.assigned_to %} selected {% endif %} disabled="disabled" value="">Reasignar
+                            denuncia...</option>
+                        <option value="null">Nadie</option>
+                        {% for user in available_asignees %}
+                        <option value={{user.id_user}} {% if user.id_user==report.assigned_to %} selected {% endif %}>
+                            {{user.username}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+                <div class="mb-3">
+                    <label for="fname" class="form-label">Nombre denunciante</label>
+                    <input name="fname" value="{{report.fname}}" id="fname" type="text" class="form-control"
+                        placeholder="Juan" required>
+
+                </div>
+                <div class="mb-3">
+                    <label for="lname" class="form-label">Apellido denunciante</label>
+                    <input name="lname" value="{{report.lname}}" id="lname" type="text" class="form-control"
+                        placeholder="Perez" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email denunciante</label>
+                    <input name="email" value="{{report.email}}" id="email" type="text" class="form-control"
+                        placeholder="juanperez@gmail.com" required>
+                </div>
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Teléfono denunciante</label>
+                    <input name="phone" value="{{report.phone}}" id="phone" type="number" class="form-control"
+                        placeholder="2212222222" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Descripción</label>
+                    <textarea name="description" id="description" class="form-control" maxlength="500"
+                        placeholder="Describe el problema en max. 500 caracteres..." rows="7" required>{{report.description}}</textarea>
+                </div>
+                <div class="mb-3" id="grupo_cordLat">
+                    <input type="hidden" name="coords" id="coords" class="form-control" value="{{report.coords}}" />
+                </div>
+
+            </div>
+            <div class="container my-3 col-lg-6">
+                <div id="mapid" class="maparesponsive"></div>
+            </div>
+        </div>
+
+
+        <a href="{{ url_for('report_index') }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-90deg-left"></i>
+            Volver
+        </a>
+        <button type="submit" class="btn btn-primary">Modificar</button>
+
+    </form>
+
+</section>
+{% endblock %}
+{% block script %}
+{{ super() }}
+<script type="module" src="../../static/scripts/mapaParaModificarConUnPunto.js"></script>
+{% endblock %}

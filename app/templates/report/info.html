@@ -1,0 +1,182 @@
+{% extends "layout.html" %}
+{% block title %}Info{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+<meta id="my-data" name="meta" data-name="{{coords}}">
+
+{% endblock %}
+
+{% block content %}
+
+<div id="banner" class="text-white" role="img" aria-label="Fondo lluvioso">
+  <h1>{{report.title.upper()}}</h1>
+</div>
+
+{% set hayAcciones = False %}
+<div class="modal fade" id="acciones" tabindex="-1" aria-labelledby="acciones" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Acciones</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="{{ url_for('report_change_status',id=report.id_report) }}" method="POST" novalidate>
+        <div class="modal-body">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <div class="mb-3">
+            <select id="statusSelect" name="statusSelect" class="form-select">
+              <option selected disabled>Acciones disponbibles...</option>
+              {%if check_permission('denuncias_tracing') and report.assigned_to == session.get("user") and extHistoriesQuantity > 0 and report.status == estados.SINCONFIRMAR.name %}
+              <option value="{{estados.ENCURSO.name}}">Confirmar</option>
+              {% set hayAcciones = True %}
+              {% endif %}
+              {%if check_permission('denuncias_tracing') and report.assigned_to == session.get("user") and extHistoriesQuantity > 0 and report.status == estados.ENCURSO.name %}
+              <option value="{{estados.RESUELTA.name}}">Marcar como resuelta</option>
+              {% set hayAcciones = True %}
+              {% endif %}
+              {%if check_permission('denuncias_tracing') and extHistoriesQuantity > 0 and report.status == estados.ENCURSO.name %}
+              <option value="{{estados.CERRADA.name}}">Cerrar</option>
+              {% set hayAcciones = True %}
+              {% endif %}
+            </select>
+
+            <div id="hidden_div">
+              <label for="motivoCierre" class="form-label mt-3">Está a punto de cerrar una denuncia no resuelta.
+                Justifique su decisión:</label>
+              <input name="motivoCierre" id="motivoCierre" type="text" class="form-control"
+                placeholder="Ingrese el motivo de cierre..." required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+</div>
+
+<div class="container py-4 mb-5">
+  <div class="container">
+    <div class="row align-items-center text-center">
+      <div class="col-lg-6">
+        <h2> <i class="bi bi-person"></i>
+          Datos de la denuncia
+        </h2>
+        <h5>Email: {{report.email}}</h5>
+        <h5>Nombre completo: {{report.fname}} {{report.lname}}</h5>
+        <h5>Teléfono: {{report.phone}}</h5>
+      </div>
+      <div class="col-lg-6 align-items-center">
+        <div id="mapid" class="mapid mb-3"></div>
+      </div>
+
+      <p>{{report.description}}</p>
+    </div>
+  </div>
+
+  <div class="py-3 text-center">
+    <a href="{{ url_for('report_index') }}" class="btn btn-primary me-1"><i class="bi bi-arrow-90deg-left"></i>Volver</a>
+    {%if check_permission('denuncias_update') and report.status != estados.CERRADA.name and report.status != estados.RESUELTA.name %}
+    <a href="{{url_for('report_update',id=report.id_report)}}" class="btn btn-danger me-1">Modificar</a>
+    {% endif %}
+
+    {%if check_permission('denuncias_tracing') and report.assigned_to != None and (report.status == estados.ENCURSO.name or report.status == estados.SINCONFIRMAR.name) %}
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#seguimientoDenuncia">
+      Cargar seguimiento
+    </button>
+    {% endif %}
+
+    {% if hayAcciones %}
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#acciones">
+      Acciones
+    </button>
+    {% endif %}
+
+    {%if check_permission('denuncias_destroy') and report_histories |length ==0  and report.status != estados.CERRADA.name and report.status != estados.RESUELTA.name %}
+    <a href="{{ url_for('report_delete',id=report.id_report) }}" class="btn btn-warning"
+      onclick="return confirm('¿Estás seguro que querés eliminar la denuncia? Solo podrás eliminarla si no tiene seguimiento asociado')">
+      Eliminar
+    </a>
+    {% endif %}
+  </div>
+
+  <div class="d-flex justify-content-center mb-5">
+    <table id="seguimientos" class="table mt-3 display text-center">
+      <thead>
+        <tr>
+          <th>Autor</th>
+          <th>Descripcion</th>
+          <th>Fecha de modificacion</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%for user, report_history in report_histories%}
+        <tr>
+          {% if user %}
+          <td>{{ user.username }}</td>
+          {% else %}
+          <td><i>Usuario eliminado</i></td>
+          {%endif%}
+          <td>{{ report_history.description }}</td>
+          <td>{{ report_history.date }}</td>
+        </tr>
+        {%endfor%}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" id="seguimientoDenuncia" aria-labelledby="seguimientoDenuncia" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" >Nuevo seguimiento</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="{{ url_for('report_tracing', id=report.id_report) }}" method="POST">
+        <div class="modal-body">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <div class="mb-3">
+            <label for="description" class="form-label">Descripcion</label>
+              <textarea name="description" id="description" class="form-control" maxlength="500"
+              placeholder="Describe la descripcion del seguimiento en max. 500 caracteres..." rows="7" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block script %}
+{{ super() }}
+
+
+<script type="module" src="../../static/scripts/mapaInfo.js"></script>
+
+<script>
+  var select = document.getElementById("statusSelect")
+  select.addEventListener("change", (event) => {
+    document.getElementById("hidden_div").style.display = select.value == "{{estados.CERRADA.name}}" ? 'block' : 'none';
+  })
+
+</script>
+
+{% endblock %}
