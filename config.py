@@ -27,15 +27,15 @@ class ProductionConfig(Config):
 class DevelopmentConfig(Config):
     """Development configuration."""
 
-    DB_HOST = environ.get("DB_HOST", "localhost")
-    DB_USER = environ.get("DB_USER", "DB_USER")
-    DB_PASS = environ.get("DB_PASS", "DB_PASS")
-    DB_NAME = environ.get("DB_NAME", "ubicar")
+    DB_HOST = environ.get("DB_HOST", "MY_DB_HOST")
+    DB_USER = environ.get("DB_USER", "MY_DB_USER")
+    DB_PASS = environ.get("DB_PASS", "MY_DB_PASS")
+    DB_NAME = environ.get("DB_NAME", "MY_DB_NAME")
     SQLALCHEMY_DATABASE_URI= (f"mysql+pymysql://{DB_USER}:{DB_PASS}@{DB_HOST}:3306/{DB_NAME}")
 
 class TestingConfig(Config):
     """Testing configuration."""
-    DB_HOST = environ.get("DB_HOST", "localhost")
+    DB_HOST = environ.get("DB_HOST", "MY_DB_HOST")
     DB_USER = environ.get("DB_USER", "MY_DB_USER")
     DB_PASS = environ.get("DB_PASS", "MY_DB_PASS")
     DB_NAME = environ.get("DB_NAME", "MY_DB_NAME")

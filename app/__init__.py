@@ -36,7 +36,7 @@ def create_app(environment="development"):
 
     #db config
     db.init_db(app)
-    # db.seed() # DESCOMENTAR PRIMERA VEZ 
+    db.seed() # COMENTAR LUEGO DE LA PRIMER EJECUCIÓN 
 
     # Funciones que se exportan al contexto de Jinja2
     app.jinja_env.globals.update(is_authenticated=helper_auth.authenticated)
